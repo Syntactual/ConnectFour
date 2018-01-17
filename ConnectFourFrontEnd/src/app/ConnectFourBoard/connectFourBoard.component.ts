@@ -31,6 +31,12 @@ export class ConnectFourBoard {
       
 }
 
+public newGame(window){
+  location.reload();
+}
+public playComputer(){
+
+}
     private switchPlayers(){
       if(this.player1){
         this.player1 = false;

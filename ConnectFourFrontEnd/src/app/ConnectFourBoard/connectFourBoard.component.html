@@ -8,6 +8,18 @@
             
         </div>
     </div>
+    <div class="row navButtons text-center">
+        <div class="col-2 navButton">
+            <button class="btn btn-success" (click)="newGame($window);">New Game</button>
+            
+        </div>
+        <div class="col-2 navButton">
+            <button class="btn btn-success" (click)="playComputer();">Play Computer</button>
+        </div>
+        
+    </div>
+    <br>
+    
     <div *ngFor="let row of rows; let rowIndex = index;" class="row box">
         <div class="col-7 text-center">
             <div class="column" *ngFor="let column of columns; let columnIndex = index;">

@@ -25,3 +25,7 @@
     background-color: red;
 }
 
+.container .navButtons .navButton {
+    display: inline-block;
+}
+
