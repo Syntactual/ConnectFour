@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Welcome to Connect Four</h2>
+            <br>
+        </div>
+    </div>
+    <div *ngFor="let row of rows; let rowPosition = index;" class="row box">
+        <div class="col-7 text-center">
+            <div class="column" *ngFor="let column of columns;">{{column}}</div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 6 rows 7 columns -->
