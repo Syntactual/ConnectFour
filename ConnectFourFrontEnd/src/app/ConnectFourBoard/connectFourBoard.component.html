@@ -2,7 +2,10 @@
     <div class="row">
         <div class="col-12 text-center">
             <h2>Welcome to Connect Four</h2>
+            <h3 *ngIf="player1Wins">Player 1 Wins</h3>
+            <h3 *ngIf="player2Wins">Player 2 Wins</h3>
             <br>
+            
         </div>
     </div>
     <div *ngFor="let row of rows; let rowIndex = index;" class="row box">
