@@ -5,9 +5,13 @@
             <br>
         </div>
     </div>
-    <div *ngFor="let row of rows; let rowPosition = index;" class="row box">
+    <div *ngFor="let row of rows; let rowIndex = index;" class="row box">
         <div class="col-7 text-center">
-            <div class="column" *ngFor="let column of columns;">{{column}}</div>
+            <div class="column" *ngFor="let column of columns; let columnIndex = index;">
+                <div class="circle"  (click)="playerPicked(rowIndex, columnIndex, $event)" id="{{rowIndex}}-{{columnIndex}}">
+                    
+                </div>
+            </div>
         </div>
     </div>
 </div>
