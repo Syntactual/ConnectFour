@@ -82,7 +82,7 @@ public playMaster(){
     }
 
    playerPicked(row: number, column: number, element: any ){
-  if(this.player1Points === 4 || this.player2Points === 4){
+  if(this.player1Points >= 4 || this.player2Points >= 4){
     return false;
   }else{
     if(!this.playingComputer){
@@ -197,6 +197,49 @@ public playMaster(){
 
   private testVertical(row: number, column: number, playerPositions: Array<number>){
     let point = 1;
+    let rowSequence = new Array();
+    for(let position of playerPositions){
+      rowSequence.push(position[0]);
+    }
+    let uniqueRowValues = Array.from(new Set(rowSequence.sort()));
+    if(this.testFourInArow(uniqueRowValues)){
+      let columns = new Array(7);
+      for(let t = 0; t < 7; t++){
+        columns[t] = new Array();
+      }
+
+      for(let position of playerPositions){
+        switch(position[1]){
+          case 0 : columns[0].push(position[1]);
+                   break;
+          case 1 : columns[1].push(position[1]);
+                  break;
+          case 2 : columns[2].push(position[1]);
+                   break;
+          case 3 : columns[3].push(position[1]);
+                  break;
+          case 4 : columns[4].push(position[1]);
+                  break;
+          case 5 : columns[5].push(position[1]);
+                  break;
+          case 6 : columns[6].push(position[1]);
+                  break;     
+        }          
+      
+      }
+      let fourInARow = false;
+      for(let column of columns){
+        if(column.length >= 4)
+        {
+          fourInARow = true;
+          break;
+        }
+      }
+      return fourInARow;
+
+    }
+
+/*
     for(let x = 1; x <= 3; x++)
     {
       let pointHit = false;
@@ -215,6 +258,7 @@ public playMaster(){
       }
     }
     return point;
+    */
   }
 
   private testDiagnolRight(row: number, column: number, playerPositions: Array<number>){
@@ -226,7 +270,7 @@ public playMaster(){
       for(let position of playerPositions){
         if(position[0] === row - x && position[1] === column + x){
           point++;
-          console.log(point);
+          //console.log(point);
           hitPositions.push(position);
           pointHit = true;
           
@@ -234,7 +278,7 @@ public playMaster(){
           
         if(position[0] === row + x && position[1] === column - x ){
           point++;
-          console.log(point);
+         // console.log(point);
           pointHit = true;
           
         }
@@ -256,12 +300,12 @@ public playMaster(){
       for(let position of playerPositions){
         if(position[0] === row - x && position[1] === column - x){
           point++;
-          console.log(point);
+          //console.log(point);
           pointHit = true;
           
         }if(position[0] === row + x && position[1] === column + x ){
           point++;
-          console.log(point);
+         // console.log(point);
           pointHit = true;
           break;
         }
@@ -284,6 +328,7 @@ public playMaster(){
 
     
       for(let position of playerPositions){
+        
         switch(position[0]){
           case 0 : rows[0].push(position[1]);
                    break;
@@ -300,29 +345,15 @@ public playMaster(){
                 
         }          
       
-      console.log(rows);
-      for(let row of rows){
-        let point = 1;
-        row.sort();
-        for(let i = 0; i < row.length; i++) {
-          
-          console.log(row[i] - row[i-1]);
-          
-          if(row[i] - row[i-1] == 1) {
-            point++;
-            console.log(point);
-            if(point >= 4)
-            {
-              return point;
-            }   
-          }else{
-            point = 1;
-          }
-          
-          }
-        }
-        
       }
+      let fourInARow = false;
+    for(let row of rows){
+      if(this.testFourInArow(row.sort())){
+         fourInARow = true;
+      }
+    }
+    return fourInARow;
+      
 /*
       for(let x = 1; x< row0.length; x++)
     }
@@ -391,7 +422,7 @@ public playMaster(){
   private setScore(row: number, column: number){
     return new Promise((res)=>{
       if(this.player1){
-        if(this.testHorizontal(row, column, this.player1Positions) >= 4 || this.testDiagnolLeft(row, column, this.player1Positions) >= 4 || this.testDiagnolRight(row, column, this.player1Positions)>= 4 || this.testVertical(row, column, this.player1Positions) >= 4)
+        if(this.testHorizontal(row, column, this.player1Positions) || this.testDiagnolLeft(row, column, this.player1Positions) >= 4 || this.testDiagnolRight(row, column, this.player1Positions)>= 4 || this.testVertical(row, column, this.player1Positions))
       {
         this.player1Wins = true;
         this.player1Points = 4;
@@ -403,7 +434,7 @@ public playMaster(){
       
     }
     else{
-      if(this.testHorizontal(row, column, this.player2Positions) >= 4 || this.testDiagnolLeft(row, column, this.player2Positions) >= 4 || this.testDiagnolRight(row, column, this.player2Positions) >= 4 || this.testVertical(row, column, this.player2Positions) >= 4)
+      if(this.testHorizontal(row, column, this.player2Positions) || this.testDiagnolLeft(row, column, this.player2Positions) >= 4 || this.testDiagnolRight(row, column, this.player2Positions) >= 4 || this.testVertical(row, column, this.player2Positions))
     {
       this.player2Wins = true;
       this.player2Points = 4
@@ -414,5 +445,31 @@ public playMaster(){
     }
     });
   
+  }
+
+  private testFourInArow(array: Array<number>){
+    let points = 1;
+    for(let i = 0; i < array.length; i++) {
+          console.log(array[i] - array[i -1]);
+      if(array[i] - array[i-1] == 1) {
+        points++;
+        
+        if(points >= 4)
+        {
+          break;
+        }   
+      }else{
+        points = 1;
+      }
+
+      
+      }
+      if(points >= 4)
+      {
+        return true;
+      }
+      else{
+        return false;
+      }
   }
 }
