@@ -4,18 +4,34 @@
             <h2>Welcome to Connect Four</h2>
             <h3 *ngIf="player1Wins">Player 1 Wins</h3>
             <h3 *ngIf="player2Wins">Player 2 Wins</h3>
+            <h4 *ngIf="playingStandard">Playing Standard Difficulty against the Computer</h4>
+            <h4 *ngIf="playingCunning">Playing Cunning Difficulty against the Computer</h4>
             <br>
             
         </div>
     </div>
     <div class="row navButtons text-center">
         <div class="col-2 navButton">
-            <button class="btn btn-success" (click)="newGame($window);">New Game</button>
+            <button class="btn btn-success" (click)="newGame();">New Game</button>
             
         </div>
-        <div class="col-2 navButton">
-            <button class="btn btn-success" (click)="playComputer();">Play Computer</button>
+        <div *ngIf="playingComputer" class="col-4 navButton">
+           
         </div>
+        
+            <div *ngIf="chooseDifficulty"  class="col-4 navButton">
+                <button class="btn btn-success" (click)="playStandard();">Standard</button>
+                <button class="btn btn-success" (click)="playMaster();">Cunning</button>
+            </div>
+        
+        
+        
+            <div class="col-8 navButton" *ngIf="playingHuman" >
+                <button id="playComputerButton" class="btn btn-success" (click)="playComputer();">Play Computer</button>
+                
+            </div>
+        
+        
         
     </div>
     <br>
