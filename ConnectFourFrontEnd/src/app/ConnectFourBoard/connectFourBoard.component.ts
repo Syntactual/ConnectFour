@@ -287,6 +287,7 @@ public playMaster(){
       }
 
       for(let position of playerPositions){
+        console.log(position[1]);
         switch(position[1]){
           case 0 : columns[0].push(position[1]);
                    break;
@@ -545,7 +546,7 @@ public playMaster(){
   private setScore(row: number, column: number){
     return new Promise((res)=>{
       if(this.player1){
-        if(this.testHorizontal(row, column, this.player1Positions) || this.testDiagnolLeft(row, column, this.player1Positions) || this.testDiagnolright(row, column, this.player1Positions))
+        if(this.testHorizontal(row, column, this.player1Positions) || this.testDiagnolLeft(row, column, this.player1Positions) || this.testDiagnolright(row, column, this.player1Positions) || this.testVertical(row, column, this.player1Positions))
       {
         this.player1Wins = true;
         this.player1Points = 4;
