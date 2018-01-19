@@ -148,25 +148,31 @@ public playMaster(){
         if(!this.player1 && this.playingComputer){
        
           setTimeout(() => {
-            
-            //check player 1 for 3 in a row; if they have one see if it can play the winning slot
-            let locations = this.testForThree(this.player1Positions);
-            console.log(locations);
-            if(locations.length !== 0){
-              if(typeof(this.board[locations[2]][locations[1]]) === 'undefined'){
-                console.log("first spot");
-                this.playerPicked(locations[2], locations[1], document.getElementById(locations[2] + '-' + locations[1]));
-              }else if(typeof(this.board[locations[2]][locations[0]]) === 'undefined'){
-                console.log("second spot");
-                this.playerPicked(locations[2], locations[0], document.getElementById(locations[2] + '-' + locations[0]));
+            if(this.computerTestVertical(this.player1Positions).length !== 0){
+              let position = this.computerTestVertical(this.player1Positions);
+              
+              this.playerPicked(position[0], position[1], document.getElementById(position[0] + '-' + position[1]));
+            }else{
+              //check player 1 for 3 in a row; if they have one see if it can play the winning slot
+              let locations = this.testForThree(this.player1Positions);
+              //console.log(locations);
+              if(locations.length !== 0){
+                if((typeof(this.board[locations[2]][locations[1]]) === 'undefined' && this.board[locations[2]][locations[1]+ 1])|| (typeof(this.board[locations[2]][locations[1]]) === 'undefined' && locations[1] === 5)) {
+                  console.log("first spot");
+                  this.playerPicked(locations[2], locations[1], document.getElementById(locations[2] + '-' + locations[1]));
+                }else if((typeof(this.board[locations[2]][locations[0]]) === 'undefined' && this.board[locations[2]][locations[0]+1]) || (typeof(this.board[locations[2]][locations[0]]) === 'undefined' && locations[0] === 5)){
+                  console.log("second spot");
+                  this.playerPicked(locations[2], locations[0], document.getElementById(locations[2] + '-' + locations[0]));
+                }else{
+                  this.RandomPlay();
+                  console.log("random");
+                
+                }
               }else{
                 this.RandomPlay();
-                console.log("random");
-               
               }
-            }else{
-              this.RandomPlay();
             }
+            
            
            
 /*
@@ -212,8 +218,83 @@ public playMaster(){
     }
   }
 
+  private computerTestVertical(playerPositions: Array<number>){
+
+    let newPosition = new Array();
+    let rowSequence = new Array();
+    for(let position of playerPositions){
+      rowSequence.push(position[0]);
+    }
+    console.log(rowSequence);
+    let uniqueRowValues = Array.from(new Set(rowSequence.sort()));
+    if(this.testThreeInArow(rowSequence, null)){
+      let columns = new Array(7);
+      for(let t = 0; t < 7; t++){
+        columns[t] = new Array();
+      }
+
+      for(let position of playerPositions){
+        //console.log(position[1]);
+        switch(position[1]){
+          case 0 : columns[0].push(position[1]);
+                   break;
+          case 1 : columns[1].push(position[1]);
+                  break;
+          case 2 : columns[2].push(position[1]);
+                   break;
+          case 3 : columns[3].push(position[1]);
+                  break;
+          case 4 : columns[4].push(position[1]);
+                  break;
+          case 5 : columns[5].push(position[1]);
+                  break;
+          case 6 : columns[6].push(position[1]);
+                  break;     
+        }          
+      
+      }
+      let threeInRow = false;
+      let verticalIndex = -1;
+      for(let column of columns){
+        verticalIndex++;
+        if(column.length === 3 )
+        {
+          
+          threeInRow = true;
+          
+          
+         
+            if(typeof(this.board[uniqueRowValues[0]-1][verticalIndex]) === 'undefined'){
+              
+              newPosition = [uniqueRowValues[0]-1, verticalIndex];
+              //console.log(newPosition);
+            }
+              
+            
+
+            
+          
+          
+          
+          
+        }
+      }
+      
+      
+    }
+    return newPosition;
+  }
+
   private testForThree(playerPositions: Array<number>){
+    
+    //test vertical
+    
+
+      //return fourInARow;
+    
+    
     //test horizontal for 3
+    //doesnt see row just column and assumes bottom row
     let rows = new Array(6);
     for(let t = 0; t < 6; t++){
       rows[t] = new Array();
@@ -274,7 +355,8 @@ public playMaster(){
   }
 
   private testVertical(row: number, column: number, playerPositions: Array<number>){
-    
+    //fix so it has to stay in same column
+    /*
     let rowSequence = new Array();
     for(let position of playerPositions){
       rowSequence.push(position[0]);
@@ -317,8 +399,8 @@ public playMaster(){
       return fourInARow;
 
     }
-
-/*
+*/
+let point = 1;
     for(let x = 1; x <= 3; x++)
     {
       let pointHit = false;
@@ -336,8 +418,12 @@ public playMaster(){
         break;
       }
     }
-    return point;
-    */
+    if(point >= 4){
+      return true;
+    }else{
+      return false;
+    }
+    
   }
 
   private testDiagnolright(row: number, column: number, playerPositions: Array<number>){
