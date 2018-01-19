@@ -184,10 +184,36 @@ public playMaster(){
                 }
                 
                 
-              }else{
-                this.RandomPlay();
-                console.log("Random");
+              }else if(this.computerDiagnol(this.player1Positions).length !== 0){
+                let diagnolPositions = this.computerDiagnol(this.player1Positions);
+                if(diagnolPositions.length !== 0){
+                  let pickedMove = new Array();
+                  for(let position of diagnolPositions){
+                    if(position[1]<=6 && position[1]>= 0 && typeof(this.board[position[0]][position[1]])==='undefined'){
+                      if(position[0] !== 5 && this.board[position[0]+ 1][position[1]] || position[0]===5){
+                        pickedMove.push([position[0],position[1]]);
+                        console.log("diagnol");
+                        break;
+                      }
+
+                  }else{
+                    this.RandomPlay();
+                  console.log("Random");
+                  }
+                }
+                if(pickedMove.length !== 0){
+                  this.playerPicked(pickedMove[0][0], pickedMove[0][1], document.getElementById(pickedMove[0][0] + '-' + pickedMove[0][1]));
+                }else{
+                  this.RandomPlay();
+                  console.log("Random");
               }
+            }else{
+              this.RandomPlay();
+                  console.log("Random");
+            }}else{
+              this.RandomPlay();
+                  console.log("Random");
+            }}}, 1000);
               /*
                 if(locations[1] <= 6 ){
                   if((typeof(this.board[locations[2]][locations[1]]) === 'undefined' && locations[2] === 5)|| (typeof(this.board[locations[2]][locations[1]]) === 'undefined' && this.board[locations[2] + 1][locations[1]])) {
@@ -210,7 +236,7 @@ public playMaster(){
                 }*/
                
                
-            }
+            
             
            
            
@@ -232,7 +258,7 @@ public playMaster(){
             */
              //check if player 1 has a wiinning turn next and stop it
              
-           }, 1000);
+          
            
          }
       });
@@ -400,17 +426,49 @@ public playMaster(){
           if(row[i] - row[i-1] == 1) {
           points++;
         
-        if(points === 3)
-        {
-          nextPosition.push([index,row[0]-1]);
-          nextPosition.push([index,row[row.length -1]+1]);
-          break;
-        }   
-          }else{
+          if(points === 3)
+          {
+            nextPosition.push([index,row[0]-1]);
+            nextPosition.push([index,row[row.length -1]+1]);
+            break;
+          }   
+        }else if(points === 2 && row[i] - row[i-1] == 2){
+          
+            points++;
+           
+              nextPosition.push([index,row[0]+2]);
+              break;
+            
+              
+            }else{
             points = 1;
           }
 
           
+          }
+          if(points !== 3){
+            row.reverse();
+        let points = 1;
+        for(let i = 0; i < row.length; i++) {
+          //console.log(array[i] - array[i -1]);
+          if(row[i] - row[i+1] == 1) {
+          points++;
+        
+          
+        }else if(points === 2 && row[i] - row[i+1] == 2){
+          
+            points++;
+           
+              nextPosition.push([index,row[0]-2]);
+              break;
+            
+              
+            }else{
+            points = 1;
+          }
+
+          
+          }
           }
       }
       return nextPosition;
@@ -613,6 +671,52 @@ let point = 1;
     
   }
 
+  private computerDiagnol(playerPositions: Array<Array<number>>){
+    let points = 1;
+    let pointNotHitUp = false;
+    let pointNothitDown = false;
+    let lastPosition = playerPositions[playerPositions.length - 1];
+    let nextPosition = new Array();
+
+    for(let x = 1; x <= 3; x++)
+    {
+      let hitPositions = new Array;
+      let pointHit = false;
+      for(let position of playerPositions){
+        
+        if(position[0] === lastPosition[0] - x && position[1] === lastPosition[1] + x){
+          points++;
+          //console.log(point);
+          if(points === 3){
+            nextPosition.push([position[0], position[1]]);
+          }
+          pointNotHitUp = true;
+          pointHit = true;
+          
+        }else{
+          pointNotHitUp = true;
+        }
+          
+        if(position[0] === lastPosition[0] + x && position[1] === lastPosition[1] - x){
+          points++;
+         // console.log(point);
+          pointHit = true;
+          if(points === 3){
+            nextPosition.push([position[0], position[1]]);
+            pointNothitDown = true;
+          }
+        }else{
+          pointNothitDown = true;
+        }
+              
+      }
+      if(!pointHit){
+        break;
+      }
+    }
+    return nextPosition;
+  }
+
   private testDiagnolright(row: number, column: number, playerPositions: Array<number>){
     //not working; need to look more into the placement
     /*
@@ -651,24 +755,31 @@ let point = 1;
 
 
     let points = 1;
+    let pointNotHitUp = false;
+    let pointNothitDown = false;
     for(let x = 1; x <= 3; x++)
     {
       let hitPositions = new Array;
       let pointHit = false;
       for(let position of playerPositions){
+        
         if(position[0] === row - x && position[1] === column + x){
           points++;
           //console.log(point);
           hitPositions.push(position);
           pointHit = true;
           
+        }else{
+          pointNotHitUp = true;
         }
           
-        if(position[0] === row + x && position[1] === column - x ){
+        if(position[0] === row + x && position[1] === column - x){
           points++;
          // console.log(point);
           pointHit = true;
           
+        }else{
+          pointNothitDown = true;
         }
               
       }
