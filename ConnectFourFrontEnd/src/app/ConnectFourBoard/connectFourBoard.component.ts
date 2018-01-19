@@ -30,6 +30,8 @@ export class ConnectFourBoard {
   chooseDifficulty = false;
   playingStandard = false;
   playingCunning = false;
+
+  savedDiagnolRight = new Array();
  
   constructor() {    
     for (let i = 0; i < 6; i++) {
@@ -148,8 +150,45 @@ public playMaster(){
         if(!this.player1 && this.playingComputer){
        
           setTimeout(() => {
+            if(this.savedDiagnolRight.length !== 0){
+              for(let position of this.savedDiagnolRight){
+                if(typeof(this.board[position[0]+ 1][position[1]]) && typeof(this.board[position[0]][position[1]])==='undefined'){
+                  this.playerPicked(position[0], position[1], document.getElementById(position[0] + '-' + position[1]))
+
+                }
+              }
+            }
+            else if(this.computerDiagnol(this.player1Positions).length !== 0){
+              let diagnolPositions = this.computerDiagnol(this.player1Positions);
+              if(diagnolPositions.length !== 0){
+                let pickedMove = new Array();
+                for(let position of diagnolPositions){
+                  if(position[1]<=6 && position[1]>= 0 && typeof(this.board[position[0]][position[1]])==='undefined'){
+                    if(position[0] !== 5 && this.board[position[0]+ 1][position[1]] || position[0]===5){
+                      pickedMove.push([position[0],position[1]]);
+                      console.log("diagnol");
+                      break;
+                    }else if(typeof(this.board[position[0] + 1][position[1]])=== 'undefined'){
+                      this.savedDiagnolRight.push([position[0]+1,position[1]]);
+                    }
+
+                }else{
+                  this.RandomPlay();
+                console.log("Random");
+                }
+              }
+              if(pickedMove.length !== 0){
+                this.playerPicked(pickedMove[0][0], pickedMove[0][1], document.getElementById(pickedMove[0][0] + '-' + pickedMove[0][1]));
+              }else{
+                this.RandomPlay();
+                console.log("Random");
+            }
+          }else{
+            this.RandomPlay();
+                console.log("Random");
+          }}
             
-            if(this.computerTestVertical(this.player1Positions).length !== 0 && this.computerTestVertical(this.player1Positions)[0]>=0){
+            else if(this.computerTestVertical(this.player1Positions).length !== 0 && this.computerTestVertical(this.player1Positions)[0]>=0){
               //use last location
               let position = this.computerTestVertical(this.player1Positions);
              
@@ -184,33 +223,7 @@ public playMaster(){
                 }
                 
                 
-              }else if(this.computerDiagnol(this.player1Positions).length !== 0){
-                let diagnolPositions = this.computerDiagnol(this.player1Positions);
-                if(diagnolPositions.length !== 0){
-                  let pickedMove = new Array();
-                  for(let position of diagnolPositions){
-                    if(position[1]<=6 && position[1]>= 0 && typeof(this.board[position[0]][position[1]])==='undefined'){
-                      if(position[0] !== 5 && this.board[position[0]+ 1][position[1]] || position[0]===5){
-                        pickedMove.push([position[0],position[1]]);
-                        console.log("diagnol");
-                        break;
-                      }
-
-                  }else{
-                    this.RandomPlay();
-                  console.log("Random");
-                  }
-                }
-                if(pickedMove.length !== 0){
-                  this.playerPicked(pickedMove[0][0], pickedMove[0][1], document.getElementById(pickedMove[0][0] + '-' + pickedMove[0][1]));
-                }else{
-                  this.RandomPlay();
-                  console.log("Random");
-              }
-            }else{
-              this.RandomPlay();
-                  console.log("Random");
-            }}else{
+              }else{
               this.RandomPlay();
                   console.log("Random");
             }}}, 1000);
@@ -680,7 +693,7 @@ let point = 1;
 
     for(let x = 1; x <= 3; x++)
     {
-      let hitPositions = new Array;
+      //let hitPositions = new Array;
       let pointHit = false;
       for(let position of playerPositions){
         
@@ -688,7 +701,7 @@ let point = 1;
           points++;
           //console.log(point);
           if(points === 3){
-            nextPosition.push([position[0], position[1]]);
+            nextPosition.push([lastPosition[0]+ 1, lastPosition[1]-1]);
           }
           pointNotHitUp = true;
           pointHit = true;
@@ -702,7 +715,7 @@ let point = 1;
          // console.log(point);
           pointHit = true;
           if(points === 3){
-            nextPosition.push([position[0], position[1]]);
+            nextPosition.push([lastPosition[0]-1, lastPosition[1]+1]);
             pointNothitDown = true;
           }
         }else{
