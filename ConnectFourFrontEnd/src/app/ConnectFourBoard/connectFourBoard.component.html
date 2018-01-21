@@ -6,6 +6,10 @@
             <h3 *ngIf="player2Wins">Player 2 Wins</h3>
             <h4 *ngIf="playingStandard">Playing Standard Difficulty against the Computer</h4>
             <h4 *ngIf="playingCunning">Playing Cunning Difficulty against the Computer</h4>
+            <h4 *ngIf="playingHuman">Playing Player vs player</h4>
+            <h5 *ngIf="player1Turn">Player 1's turn</h5>
+            <h5 *ngIf="player2Turn">Player 2's turn</h5>
+            <h5 *ngIf="computerTurn">Computer's turn</h5>
             <br>
             
         </div>
@@ -26,7 +30,8 @@
         
         
         
-            <div class="col-8 navButton" *ngIf="playingHuman" >
+            <div class="col-8 navButton" *ngIf="MakeDecision" >
+                <button id="playHumanButton" class="btn btn-success" (click)="playHuman();">Play Human</button>
                 <button id="playComputerButton" class="btn btn-success" (click)="playComputer();">Play Computer</button>
                 
             </div>
@@ -40,7 +45,7 @@
         <div class="col-7 text-center">
             <div class="column" *ngFor="let column of columns; let columnIndex = index;">
                 <div class="circle"  (click)="playerPicked(rowIndex, columnIndex, $event)" id="{{rowIndex}}-{{columnIndex}}">
-                    {{rowIndex}}-{{columnIndex}}
+                   
                 </div>
                 
             </div>

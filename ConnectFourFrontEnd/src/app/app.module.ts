@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { PositionService } from './Services/positionService';
+import { ComputerService } from './Services/computerService';
+import { Factories } from './factories';
 
 import { AppComponent } from './app.component';
 import { ConnectFourBoard } from './ConnectFourBoard/connectFourBoard.component';
@@ -10,7 +13,10 @@ import { ConnectFourBoard } from './ConnectFourBoard/connectFourBoard.component'
     ConnectFourBoard
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    PositionService,
+    ComputerService,
+    Factories
   ],
   providers: [],
   bootstrap: [AppComponent]
