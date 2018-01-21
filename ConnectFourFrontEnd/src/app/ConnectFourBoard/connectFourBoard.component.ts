@@ -102,7 +102,7 @@ private playHumanTurn(row: number, column: number, element){
 private playComputerTurn(){
   
   setTimeout(() => {
-    
+        let playToWinPosition = [];
         let diagonalPositions = this.computerService.GetDiagonalPositions(this.player1Positions, this.board);
         let verticalPositions = this.computerService.GetVerticalPositions(this.player1Positions, this.board);
         let horizontalPositions = this.computerService.GetHorizontalPositions(this.player1Positions, this.board);
@@ -120,7 +120,10 @@ private playComputerTurn(){
           this.playTurn(horizontalPositions[0],horizontalPositions[1], document.getElementById(horizontalPositions[0]+ "-" + horizontalPositions[1]));
           horizontalPositions = [];
         }else if(this.playingCunning){
-          
+          playToWinPosition = this.computerService.PlayToWin(this.player2Positions, this.board);
+          console.log("Play To Win");
+          this.playTurn(playToWinPosition[0],playToWinPosition[1], document.getElementById(playToWinPosition[0]+ "-" + playToWinPosition[1]));
+          playToWinPosition = [];
         }else{
           console.log("Random");
           this.RandomPlay();

@@ -13,6 +13,18 @@ export class ComputerService{
     }
 
     PlayToWin(computerPositions, board){
+      if(computerPositions.length === 0 ){
+        for(let x = 0; x<=3; x++){
+          if(this.posService.testPosition(5, 3+x, board)){
+            return [5, 3+x];
+          }else if(this.posService.testPosition(5, 3-x, board)){
+            return [5,3-x];
+          }
+        }
+        }else{
+          
+        }
+      
         //if no positions on the board check middle to right or middle to left for 4 in a row possible from bottom row
         //else if go vertical on closest to middle
         //else if go up one row and try for horizontal from middle again (do this til it finds a possiblity)
