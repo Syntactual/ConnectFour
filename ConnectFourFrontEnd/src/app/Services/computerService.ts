@@ -12,6 +12,15 @@ export class ComputerService{
 
     }
 
+    PlayToWin(computerPositions, board){
+        //if no positions on the board check middle to right or middle to left for 4 in a row possible from bottom row
+        //else if go vertical on closest to middle
+        //else if go up one row and try for horizontal from middle again (do this til it finds a possiblity)
+        //if no win is possible just do random
+        
+
+    }
+
     GetDiagonalPositions(playerPositions: Array<Array<number>>, gameBoard: Array<Array<number>>){
         let pointNotHitUp = false;
         let pointNothitDown = false;
@@ -127,10 +136,11 @@ export class ComputerService{
     }
 
     GetVerticalPositions(playerPositions: Array<Array<number>>, board: Array<Array<number>>) {
-        
+        playerPositions.sort();
         let newPosition = new Array();
-        let point = 0;
+       
         for(let positionA of playerPositions){
+            let point = 1;
             for(let x = 1; x <= 3; x++)
             {
               let pointHit = false;

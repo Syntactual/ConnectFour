@@ -140,10 +140,10 @@ describe("Computer Service", () => {
 
     it("Handles finding the horizontal positions but the positions under are not filled in",() => {
         let board = factories.getGameBoard();
-        board[5][1] = true;
+        board[5][5] = true;
         board[3][3] = true;
         board[2][3] = true;
-        expect(computerService.GetVerticalPositions([[4,4],[4,3],[4,2],[5,2],[5,3]],board))
+        expect(computerService.GetVerticalPositions([[4,4],[4,2],[5,2],[4,3],[5,3]],board))
         .toEqual([]);
     })
 

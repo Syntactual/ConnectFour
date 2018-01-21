@@ -110,15 +110,17 @@ private playComputerTurn(){
         if(diagonalPositions.length !== 0){
           console.log("diagnol");
           this.playTurn(diagonalPositions[0],diagonalPositions[1], document.getElementById(diagonalPositions[0]+ "-" + diagonalPositions[1]));
-
+          diagonalPositions = [];
         }else if(verticalPositions.length !== 0){
           console.log("vertical");
           this.playTurn(verticalPositions[0],verticalPositions[1], document.getElementById(verticalPositions[0]+ "-" + verticalPositions[1]));
-
+          verticalPositions = [];
         }else if(horizontalPositions.length !== 0){
           console.log("horizontal");
           this.playTurn(horizontalPositions[0],horizontalPositions[1], document.getElementById(horizontalPositions[0]+ "-" + horizontalPositions[1]));
-
+          horizontalPositions = [];
+        }else if(this.playingCunning){
+          
         }else{
           console.log("Random");
           this.RandomPlay();
@@ -145,7 +147,9 @@ private getRandomPlay(){
     private switchPlayers(){
       return new Promise((res)=> {
         if(this.GameNotReady){
-          res();
+          this.player1Turn = false;
+          this.player2Turn = false;
+          this.computerTurn = false;
         }
         else if(this.playingHuman){
           if(this.player1Turn){
@@ -172,6 +176,14 @@ private getRandomPlay(){
       })
     }
 
+    private startNextTurn(){
+      if(this.computerTurn){
+        this.playComputerTurn();
+      }else{
+        return false;
+      }
+    }
+
   private async playTurn(row: number, column: number, element: any){
     
     this.board[row][column] = true;
@@ -184,9 +196,8 @@ private getRandomPlay(){
     }  
     await this.setScore(row, column);
     await this.switchPlayers();
-    if(this.computerTurn){
-      this.playComputerTurn();
-    }
+    this.startNextTurn();
+    
     
   }
 
