@@ -13,8 +13,15 @@ namespace ConnectFour.Repositories
 
         public void SaveGame(GameModel game)
         {
-            _context.GameBoards.Add(game);
-            _context.SaveChanges();
+            try{
+                _context.GameBoards.Add(game);
+                _context.SaveChanges();
+            }
+            catch(Exception e){
+                Console.Write(e);
+            }
+
+
         }
     }
 }

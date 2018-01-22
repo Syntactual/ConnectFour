@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { PositionService } from '../Services/positionService';
 import { ComputerService } from '../Services/computerService';
 import { HttpClient } from '@angular/common/http';
+import { Options } from 'selenium-webdriver';
 
 
 
@@ -400,10 +401,15 @@ private getRandomPlay(){
         this.player1Wins = true;
         this.GameNotReady = true;
         let board = {
-          board: "help  me"
-        }
-        //this.http.post('https://connect-four-api.azurewebsites.net/api/Game/SaveGame', board).subscribe();
-        this.http.post("http://localhost:5000/api/Game", board ).subscribe();
+          "Id":"1",
+          "winner":"Player1",
+          "DatePlayed":""
+        };
+            
+            
+        this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=player1').subscribe();
+        //this.http.get("http://localhost:5000/api/Game?winner=player1;").subscribe();
+        
         res();
       }else{
         res();
@@ -416,11 +422,15 @@ private getRandomPlay(){
     {
       this.player2Wins = true;
       this.GameNotReady = true;
-      let board = {
-        board: "help  me"
+      if(this.computerTurn){
+        this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=computer').subscribe();
+      }else{
+        this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=player2').subscribe();
       }
-      //this.http.post('https://connect-four-api.azurewebsites.net/api/Game/SaveGame', board).subscribe();
-      this.http.post("http://localhost:5000/api/Game", board ).subscribe();
+        
+      
+      
+      //this.http.get("http://localhost:5000/api/Game?winner=player2;" ).subscribe();
       res()
     }else{
       res()

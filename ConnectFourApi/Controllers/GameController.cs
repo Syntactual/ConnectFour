@@ -19,13 +19,13 @@ namespace ConnectFour.Controllers
         
 
         // POST api/SaveGame
-        [HttpPost]
-        public void SaveGame(string board)
+        [HttpGet]
+        public void SaveGame([FromQuery]string winner)
         {
             var game = new GameModel
             {
                 DatePlayed = DateTime.Now,
-                gameBoard = board
+                winner = winner
             };
 
             _gameRepo.SaveGame(game);
