@@ -20,7 +20,7 @@ namespace ConnectFour.Controllers
 
         // POST api/SaveGame
         [HttpGet]
-        public void SaveGame([FromQuery]string winner)
+        public IActionResult SaveGame([FromQuery]string winner)
         {
             var game = new GameModel
             {
@@ -29,6 +29,7 @@ namespace ConnectFour.Controllers
             };
 
             _gameRepo.SaveGame(game);
+            return Ok();
         }
 
        
