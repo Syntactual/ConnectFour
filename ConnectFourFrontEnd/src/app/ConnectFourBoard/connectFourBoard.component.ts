@@ -43,6 +43,7 @@ export class ConnectFourBoard {
   player1Wins = false;
   player2Wins = false;
   computerWins = false;
+  tie = false;
 
   //public functions
 
@@ -181,7 +182,19 @@ private getRandomPlay(){
     }
 
     private startNextTurn(){
-      if(this.computerTurn){
+      let undefinedCounter = 0;
+      for(let spot of this.board){
+        if(typeof(spot)==='undefined'){
+          undefinedCounter++;
+        }
+      }
+      if(undefinedCounter === 0){
+        this.GameNotReady = true;
+        this.player1Turn = false;
+        this.player2Turn = false;
+        this.computerTurn = false;
+        this.tie = true;
+      }else if(this.computerTurn){
         this.playComputerTurn();
       }else{
         return false;
@@ -200,6 +213,7 @@ private getRandomPlay(){
     }  
     await this.setScore(row, column);
     await this.switchPlayers();
+    
     this.startNextTurn();
     
     
