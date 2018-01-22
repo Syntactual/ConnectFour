@@ -21,7 +21,33 @@ export class ComputerService{
             return [5,3-x];
           }
         }
-        }else{
+      }else if(this.posService.testPosition(computerPositions[computerPositions.length -1][0],computerPositions[computerPositions.length -1][1]+1,board)){
+          return [computerPositions[computerPositions.length -1][0],computerPositions[computerPositions.length -1][1]+1];
+      }else if(this.posService.testPosition(computerPositions[computerPositions.length -1][0],computerPositions[computerPositions.length -1][1]-1,board)){
+          return [computerPositions[computerPositions.length -1][0],computerPositions[computerPositions.length -1][1]-1];
+      }else if(this.posService.testPosition(computerPositions[computerPositions.length -1][0]-1,computerPositions[computerPositions.length -1][1],board)){
+          return [computerPositions[computerPositions.length -1][0]-1,computerPositions[computerPositions.length -1][1]];
+      }else{
+         for(let a = 3; a >= 1; a--){
+            let nextPosition = this.GetHorizontalPositions(computerPositions, board, a);
+            if(nextPosition.length !== 0){
+               return nextPosition;
+             }
+          }
+             for(let z = 3; z >=1; z--){
+            let nextPosition = this.GetVerticalPositions(computerPositions, board, z);
+            if(nextPosition.length !== 0){
+               return nextPosition;
+             }
+          }
+          for(let y = 3; y >= 1; y--){
+             let nextPosition = this.GetDiagonalPositions(computerPositions, board, y);
+             if(nextPosition.length !== 0){
+               return nextPosition;
+             }
+          } 
+       
+          return [];
           
         }
       
@@ -33,7 +59,7 @@ export class ComputerService{
 
     }
 
-    GetDiagonalPositions(playerPositions: Array<Array<number>>, gameBoard: Array<Array<number>>){
+    GetDiagonalPositions(playerPositions: Array<Array<number>>, gameBoard: Array<Array<number>>, pointLimit = 3){
         let pointNotHitUp = false;
         let pointNothitDown = false;
         let lastPosition = playerPositions[playerPositions.length - 1];
@@ -48,11 +74,11 @@ export class ComputerService{
           if(position[0] === positionA[0] - x && position[1] === positionA[1] + x){
             points++;
             //console.log(point);
-            if(points === 3 && this.posService.testPosition(positionA[0]+1, positionA[1]-1, gameBoard)){
+            if(points === pointLimit && this.posService.testPosition(positionA[0]+1, positionA[1]-1, gameBoard)){
                 nextPosition = [positionA[0]+1, positionA[1]-1];
                 
-            }else if(points === 3 && this.posService.testPosition(positionA[0]-3, positionA[1]+3, gameBoard)){
-                nextPosition = [positionA[0]-3, positionA[1]+3];
+            }else if(points === pointLimit && this.posService.testPosition(positionA[0]-pointLimit, positionA[1]+pointLimit, gameBoard)){
+                nextPosition = [positionA[0]-pointLimit, positionA[1]+pointLimit];
             }
             pointNotHitUp = true;
             pointHit = true;
@@ -65,11 +91,11 @@ export class ComputerService{
             points++;
            // console.log(point);
             pointHit = true;
-            if(points === 3 && this.posService.testPosition(positionA[0]-1, positionA[1]+1, gameBoard)){
+            if(points === pointLimit && this.posService.testPosition(positionA[0]-1, positionA[1]+1, gameBoard)){
                 nextPosition = [positionA[0]-1, positionA[1]+1];
             }
-            else if(points === 3 && this.posService.testPosition(positionA[0]+3, positionA[1]-3, gameBoard)){
-                    nextPosition = [positionA[0]+3, positionA[1]-3];
+            else if(points === pointLimit && this.posService.testPosition(positionA[0]+pointLimit, positionA[1]-pointLimit, gameBoard)){
+                    nextPosition = [positionA[0]+pointLimit, positionA[1]-pointLimit];
                 }
               
               
@@ -99,11 +125,11 @@ export class ComputerService{
             if(position[0] === positionA[0] - x && position[1] === positionA[1] - x){
               points++;
               //console.log(point);
-              if(points === 3 && this.posService.testPosition(positionA[0]+1, positionA[1]+1, gameBoard)){
+              if(points === pointLimit && this.posService.testPosition(positionA[0]+1, positionA[1]+1, gameBoard)){
                   nextPosition = [positionA[0]+1, positionA[1]+1];
                   
-              }else if(points === 3 && this.posService.testPosition(positionA[0]-3, positionA[1]-3, gameBoard)){
-                  nextPosition = [positionA[0]-3, positionA[1]-3];
+              }else if(points === pointLimit && this.posService.testPosition(positionA[0]-pointLimit, positionA[1]-pointLimit, gameBoard)){
+                  nextPosition = [positionA[0]-pointLimit, positionA[1]-pointLimit];
               }
               pointNotHitUp = true;
               pointHit = true;
@@ -116,11 +142,11 @@ export class ComputerService{
               points++;
              // console.log(point);
               pointHit = true;
-              if(points === 3 && this.posService.testPosition(positionA[0]-1, positionA[1]-1, gameBoard)){
+              if(points === pointLimit && this.posService.testPosition(positionA[0]-1, positionA[1]-1, gameBoard)){
                   nextPosition = [positionA[0]-1, positionA[1]-1];
               }
-              else if(points === 3 && this.posService.testPosition(positionA[0]+3, positionA[1]+3, gameBoard)){
-                      nextPosition = [positionA[0]+3, positionA[1]+3];
+              else if(points === pointLimit && this.posService.testPosition(positionA[0]+pointLimit, positionA[1]+pointLimit, gameBoard)){
+                      nextPosition = [positionA[0]+pointLimit, positionA[1]+pointLimit];
                   }
                 
                 
@@ -147,8 +173,8 @@ export class ComputerService{
       return nextPosition;
     }
 
-    GetVerticalPositions(playerPositions: Array<Array<number>>, board: Array<Array<number>>) {
-        playerPositions.sort();
+    GetVerticalPositions(playerPositions: Array<Array<number>>, board: Array<Array<number>>, pointLimit = 3) {
+       
         let newPosition = new Array();
        
         for(let positionA of playerPositions){
@@ -161,7 +187,7 @@ export class ComputerService{
                   point++;
                   //console.log(point);
                   pointHit = true;
-                  if(point === 3){
+                  if(point === pointLimit){
                       if(this.posService.testPosition(positionA[0]-1,positionA[1], board)){
                         newPosition = [positionA[0]-1,positionA[1]];
                         return newPosition;
@@ -181,7 +207,7 @@ export class ComputerService{
         return newPosition;
     }
 
-    GetHorizontalPositions(playerPositions: Array<Array<number>>, board: Array<Array<number>>){
+    GetHorizontalPositions(playerPositions: Array<Array<number>>, board: Array<Array<number>>, pointLimit = 3){
         let nextPosition = [];
         let rows = new Array(6);
         for(let t = 0; t < 6; t++){
@@ -217,7 +243,7 @@ export class ComputerService{
               if(row[i] - row[i-1] == 1) {
               points++;
             
-              if(points === 3)
+              if(points === pointLimit)
               {
                 if(this.posService.testPosition(index, row[0]-1, board)){
                     nextPosition = [index,row[0]-1];
@@ -239,7 +265,7 @@ export class ComputerService{
               }
     
               }
-              if(points !== 3){
+              if(points !== pointLimit){
                 row.reverse();
             let points = 1;
             for(let i = 0; i < row.length; i++) {
