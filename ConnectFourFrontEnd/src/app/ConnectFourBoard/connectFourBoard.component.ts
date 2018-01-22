@@ -78,6 +78,7 @@ playComputer(){
   this.playingComputer = true;
   this.chooseDifficulty = false;
   this.GameNotReady = false;
+  this.player1Turn = true;
 }
 
 playerPicked(row: number, column: number, element){
@@ -102,26 +103,26 @@ private playHumanTurn(row: number, column: number, element){
 private playComputerTurn(){
   
   setTimeout(() => {
-        let playToWinPosition = [];
+        
         let diagonalPositions = this.computerService.GetDiagonalPositions(this.player1Positions, this.board);
         let verticalPositions = this.computerService.GetVerticalPositions(this.player1Positions, this.board);
         let horizontalPositions = this.computerService.GetHorizontalPositions(this.player1Positions, this.board);
+        let playToWinPosition = this.computerService.PlayToWin(this.player2Positions, this.board);
 
         if(diagonalPositions.length !== 0){
-          console.log("diagnol");
+          console.log("diagnol, "+ diagonalPositions);
           this.playTurn(diagonalPositions[0],diagonalPositions[1], document.getElementById(diagonalPositions[0]+ "-" + diagonalPositions[1]));
           diagonalPositions = [];
         }else if(verticalPositions.length !== 0){
-          console.log("vertical");
+          console.log("vertical, " + verticalPositions);
           this.playTurn(verticalPositions[0],verticalPositions[1], document.getElementById(verticalPositions[0]+ "-" + verticalPositions[1]));
           verticalPositions = [];
         }else if(horizontalPositions.length !== 0){
-          console.log("horizontal");
+          console.log("horizontal, "+ horizontalPositions);
           this.playTurn(horizontalPositions[0],horizontalPositions[1], document.getElementById(horizontalPositions[0]+ "-" + horizontalPositions[1]));
           horizontalPositions = [];
-        }else if(this.playingCunning){
-          playToWinPosition = this.computerService.PlayToWin(this.player2Positions, this.board);
-          console.log("Play To Win");
+        }else if(this.playingCunning && playToWinPosition.length !== 0){      
+          console.log("Play To Win, "+ playToWinPosition);
           this.playTurn(playToWinPosition[0],playToWinPosition[1], document.getElementById(playToWinPosition[0]+ "-" + playToWinPosition[1]));
           playToWinPosition = [];
         }else{
