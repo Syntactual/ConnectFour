@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConnectFour.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,6 +25,10 @@ namespace ConnectFour
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<GameContext>(options => 
+                                               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -33,8 +39,11 @@ namespace ConnectFour
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseMvc();
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseMvc(routes => 
+            {
+                routes.MapRoute("default", "api/{controller=Game}/{action=SaveGame}");
+            });
         }
     }
 }

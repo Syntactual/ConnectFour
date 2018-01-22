@@ -4,6 +4,10 @@ import { ArrayType } from '@angular/compiler/src/output/output_ast';
 import { Observable } from 'rxjs/Observable';
 import { PositionService } from '../Services/positionService';
 import { ComputerService } from '../Services/computerService';
+import { HttpClient } from '@angular/common/http';
+
+
+
 
 
 @Component({
@@ -20,7 +24,8 @@ export class ConnectFourBoard {
   player2Positions = new Array();
 
   constructor(public positionService: PositionService,
-              public computerService: ComputerService){
+              public computerService: ComputerService,
+              private http: HttpClient){
 
     for (let i = 0; i < 6; i++) {
       this.board[i] = new Array(7);
@@ -182,19 +187,7 @@ private getRandomPlay(){
     }
 
     private startNextTurn(){
-      let undefinedCounter = 0;
-      for(let spot of this.board){
-        if(typeof(spot)==='undefined'){
-          undefinedCounter++;
-        }
-      }
-      if(undefinedCounter === 0){
-        this.GameNotReady = true;
-        this.player1Turn = false;
-        this.player2Turn = false;
-        this.computerTurn = false;
-        this.tie = true;
-      }else if(this.computerTurn){
+      if(this.computerTurn){
         this.playComputerTurn();
       }else{
         return false;
@@ -406,7 +399,11 @@ private getRandomPlay(){
       {
         this.player1Wins = true;
         this.GameNotReady = true;
-        
+        let board = {
+          board: "help  me"
+        }
+        //this.http.post('https://connect-four-api.azurewebsites.net/api/Game/SaveGame', board).subscribe();
+        this.http.post("http://localhost:5000/api/Game", board ).subscribe();
         res();
       }else{
         res();
@@ -419,7 +416,11 @@ private getRandomPlay(){
     {
       this.player2Wins = true;
       this.GameNotReady = true;
-     
+      let board = {
+        board: "help  me"
+      }
+      //this.http.post('https://connect-four-api.azurewebsites.net/api/Game/SaveGame', board).subscribe();
+      this.http.post("http://localhost:5000/api/Game", board ).subscribe();
       res()
     }else{
       res()

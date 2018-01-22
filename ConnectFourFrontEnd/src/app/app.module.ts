@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { PositionService } from './Services/positionService';
 import { ComputerService } from './Services/computerService';
 import { Factories } from './factories';
+import { HttpClientModule } from '@angular/common/http';
 
+ 
 import { AppComponent } from './app.component';
 import { ConnectFourBoard } from './ConnectFourBoard/connectFourBoard.component';
 
@@ -16,7 +18,9 @@ import { ConnectFourBoard } from './ConnectFourBoard/connectFourBoard.component'
     BrowserModule,
     PositionService,
     ComputerService,
-    Factories
+    Factories,
+    HttpClientModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

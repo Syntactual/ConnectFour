@@ -1,10 +1,15 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using ConnectFour.Models;
+
 namespace ConnectFour
 {
-    public class GameContext
+    public class GameContext : DbContext
     {
-        public GameContext()
+        public GameContext(DbContextOptions<GameContext> options) : base(options)
         {
         }
+
+        public DbSet<GameModel> GameBoards { get; set; }
     }
 }
