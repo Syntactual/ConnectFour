@@ -401,14 +401,14 @@ private getRandomPlay(){
         this.player1Wins = true;
         this.GameNotReady = true;
         let board = {
-          "Id":"1",
+          
           "winner":"Player1",
           "DatePlayed":""
         };
             
             
-        this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=player1').subscribe();
-        //this.http.get("http://localhost:5000/api/Game?winner=player1;").subscribe();
+        //this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=player1').subscribe();
+        this.http.post("http://localhost:3000/SaveGame", board).subscribe();
         
         res();
       }else{
@@ -420,12 +420,25 @@ private getRandomPlay(){
     else{
       if(this.testHorizontal(row, column, this.player2Positions) || this.testDiagnolLeft(row, column, this.player2Positions) || this.testDiagnolright(row, column, this.player2Positions) || this.testVertical(row, column, this.player2Positions))
     {
+      let boardPlayer2 = {
+          
+        "winner":"Player2",
+        "DatePlayed":""
+      };
+      let boardComputer = {
+          
+        "winner":"Player2",
+        "DatePlayed":""
+      };
+
       this.player2Wins = true;
       this.GameNotReady = true;
       if(this.computerTurn){
-        this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=computer').subscribe();
+        this.http.post("http://localhost:3000/SaveGame", boardComputer).subscribe();
+        //this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=computer').subscribe();
       }else{
-        this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=player2').subscribe();
+        //this.http.get('https://connect-four-api.azurewebsites.net/api/Game?winner=player2').subscribe();
+        this.http.post("http://localhost:3000/SaveGame", boardPlayer2).subscribe();
       }
         
       
